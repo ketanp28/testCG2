@@ -105,7 +105,14 @@ public class JavaWebSocket implements Net.WebSocket {
     }
   }
 
-  
+  @Override
+  public void send(ByteBuffer data) {
+    try {
+      socket.getConnection().send(data);
+    } catch (Throwable e) {
+      throw new RuntimeException(e);
+    }
+  }
 
   private Draft useDraft(int draft){
     switch (draft) {

@@ -58,7 +58,10 @@ public abstract class JavaImage extends ImageGL<Graphics2D> {
     return scale.invScaled(img.getHeight());
   }
 
-  
+  @Override
+  public boolean isReady() {
+    return (img != null);
+  }
 
   @Override
   public Pattern toPattern() {
@@ -116,5 +119,9 @@ public abstract class JavaImage extends ImageGL<Graphics2D> {
     return new JavaPattern(image, repeatX, repeatY, new TexturePaint(subImage, rect));
   }
 
-  
+  @Override
+  protected void updateTexture(int tex) {
+    assert img != null;
+    ((JavaGLContext) ctx).updateTexture(tex, img);
+  }
 }

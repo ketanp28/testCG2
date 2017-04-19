@@ -62,7 +62,12 @@ public class SharedLibraryExtractor {
                                    System.getProperty("user.name") + "/" + dirName);
       File extractedFile = new File(extractedDir, new File(sourcePath).getName());
       String extractedCrc = null;
-      
+      if (extractedFile.exists()) {
+        try {
+          extractedCrc = crc(new FileInputStream(extractedFile));
+        } catch (FileNotFoundException ignored) {
+        }
+      }
 
       // if file doesn't exist or the CRC doesn't match, extract it to the temp dir
       if (extractedCrc == null || !extractedCrc.equals(sourceCrc)) {
@@ -122,7 +127,11 @@ public class SharedLibraryExtractor {
       InputStream input = readFile(sourcePath);
       FileOutputStream output = new FileOutputStream(target);
       byte[] buffer = new byte[4096];
-      
+      while (true) {
+        int length = input.read(buffer);
+        if (length == -1) break;
+        output.write(buffer, 0, length);
+      }
       input.close();
       output.close();
     } catch (IOException ex) {

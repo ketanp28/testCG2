@@ -36,7 +36,7 @@ class JavaCanvasImage extends JavaImage implements CanvasImage {
                                  BufferedImage.TYPE_INT_ARGB_PRE), ctx.scale);
     Graphics2D gfx = img.createGraphics();
     gfx.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
+    gfx.scale(ctx.scale.factor, ctx.scale.factor);
     canvas = new JavaCanvas(gfx, width(), height());
   }
 
@@ -54,7 +54,10 @@ class JavaCanvasImage extends JavaImage implements CanvasImage {
     return new JavaStaticImage(ctx, snap, scale);
   }
 
-  
+  @Override
+  public void addCallback(Callback<? super Image> callback) {
+    callback.onSuccess(this);
+  }
 
   @Override
   public int ensureTexture() {

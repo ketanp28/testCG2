@@ -55,7 +55,8 @@ public class JavaNet extends NetImpl {
           conn.setRequestMethod(req.method());
           if (req.isPost()) {
             conn.setDoOutput(true);
-
+            conn.setDoInput(true);
+            conn.setAllowUserInteraction(false);
             conn.setRequestProperty("Content-type", req.contentType());
             conn.connect();
             conn.getOutputStream().write(
@@ -85,7 +86,9 @@ public class JavaNet extends NetImpl {
 
         } catch (MalformedURLException e) {
           platform.notifyFailure(callback, e);
-        } 
+        } catch (IOException e) {
+          platform.notifyFailure(callback, e);
+        }
       }
       @Override
       public String toString() {

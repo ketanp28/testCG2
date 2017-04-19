@@ -39,7 +39,13 @@ class JavaGradient implements Gradient {
     return new JavaGradient(p);
   }
 
-  
+  private static Color[] convertColors(int[] colors) {
+    Color[] javaColors = new Color[colors.length];
+    for (int i = 0; i < colors.length; ++i) {
+      javaColors[i] = new Color(colors[i], true);
+    }
+    return javaColors;
+  }
 
   Paint paint;
 

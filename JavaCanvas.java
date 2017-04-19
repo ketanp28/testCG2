@@ -55,9 +55,17 @@ class JavaCanvas extends AbstractCanvasGL<Graphics2D> {
     gfx.setBackground(new Color(0, true));
   }
 
-  
+  public float alpha() {
+    return currentState().alpha;
+  }
 
-  
+  @Override
+  public Canvas clear() {
+    currentState().prepareClear(gfx);
+    gfx.clearRect(0, 0, MathUtil.iceil(width), MathUtil.iceil(height));
+    isDirty = true;
+    return this;
+  }
 
   @Override
   public Canvas clearRect(float x, float y, float width, float height) {
@@ -104,7 +112,7 @@ class JavaCanvas extends AbstractCanvasGL<Graphics2D> {
   public Canvas drawPoint(float x, float y) {
     currentState().prepareStroke(gfx);
     gfx.drawLine((int) x, (int) y, (int) x, (int) y);
-    
+    isDirty = true;
     return this;
   }
 
@@ -188,7 +196,7 @@ class JavaCanvas extends AbstractCanvasGL<Graphics2D> {
     return this;
   }
 
-  public Canvas setAlpha2(float alpha) {
+  public Canvas setAlpha(float alpha) {
     currentState().alpha = alpha;
     return this;
   }

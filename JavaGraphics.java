@@ -126,7 +126,12 @@ public class JavaGraphics extends GraphicsGL {
 
       platform.log().debug("Updating display mode: " + mode + ", fullscreen: " + fullscreen);
       // TODO: fix crashes when fullscreen is toggled repeatedly
-      
+      if (fullscreen) {
+        Display.setDisplayModeAndFullscreen(mode);
+        // TODO: fix alt-tab, maybe add a key listener or something?
+      } else {
+        Display.setDisplayMode(mode);
+      }
 
     } catch (LWJGLException ex) {
       throw new RuntimeException(ex);
@@ -189,7 +194,10 @@ public class JavaGraphics extends GraphicsGL {
     return ctx.gl;
   }
 
-  
+  @Override
+  public GL20Context ctx() {
+    return ctx;
+  }
 
   protected JavaImage createStaticImage(BufferedImage source, Scale scale) {
     return new JavaStaticImage(ctx, source, scale);
@@ -205,7 +213,9 @@ public class JavaGraphics extends GraphicsGL {
     ctx.init();
   }
 
-  
+  protected void paint() {
+    ctx.paint(rootLayer);
+  }
 
   Point transformMouse(Point point) {
     point.x /= ctx.scale.factor;

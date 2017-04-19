@@ -43,7 +43,17 @@ class JavaPath implements Path, JavaCanvasState.Clipper {
     return this;
   }
 
-  
+  @Override
+  public Path lineTo(float x, float y) {
+    path.lineTo(x, y);
+    return this;
+  }
+
+  @Override
+  public Path quadraticCurveTo(float cpx, float cpy, float x, float y) {
+    path.quadTo(cpx, cpy, x, y);
+    return this;
+  }
 
   @Override
   public Path bezierTo(float c1x, float c1y, float c2x, float c2y, float x, float y) {

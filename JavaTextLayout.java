@@ -100,7 +100,7 @@ class JavaTextLayout extends AbstractTextLayout {
     return layout.getLeading();
   }
 
-  void stroke2(Graphics2D gfx, float x, float y) {
+  void stroke(Graphics2D gfx, float x, float y) {
     paint(gfx, x, y, true);
   }
 
@@ -115,7 +115,13 @@ class JavaTextLayout extends AbstractTextLayout {
                            RenderingHints.VALUE_ANTIALIAS_ON : RenderingHints.VALUE_ANTIALIAS_OFF);
 
       float yoff = y + layout.getAscent();
-      
+      if (stroke) {
+        gfx.translate(x, yoff);
+        gfx.draw(layout.getOutline(null));
+        gfx.translate(-x, -yoff);
+      } else {
+        layout.draw(gfx, x, yoff);
+      }
 
     } finally {
       gfx.setRenderingHint(RenderingHints.KEY_ANTIALIASING, ohint);
